@@ -38,10 +38,11 @@ def predict(x):
 
 if __name__=='__main__':
     t_predict = hk.transform(predict)
+    t_predict = hk.without_apply_rng(t_predict)
 
     x = jnp.ones((2, 224, 224, 3), jnp.float32)
     rng = jax.random.PRNGKey(42)
     params = t_predict.init(rng, x)
-    y = t_predict.apply(params, rng, x)
+    y = t_predict.apply(params, x)
     print(f'{jnp.shape(x)=}')
     print(f'{jnp.shape(y)=}')
